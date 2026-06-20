@@ -1,14 +1,14 @@
 class Sound {
   constructor() {
-    this.audioContext = null;
+    this.ctx = null;
     this.periodicWaveCache = new Map();
   }
 
   getContext() {
-    if (!this.audioContext) {
-      this.audioContext = new AudioContext();
+    if (!this.ctx) {
+      this.ctx = new AudioContext();
     }
-    return this.audioContext;
+    return this.ctx;
   }
 
   getPeriodicWave(samples) {
@@ -22,7 +22,6 @@ class Sound {
 
   play(freq, duration, type = "square", volume = 0.1) {
     const ctx = this.getContext();
-
     const osc = ctx.createOscillator();
     const gain = ctx.createGain();
 
@@ -31,9 +30,7 @@ class Sound {
     } else {
       osc.type = type;
     }
-
     osc.frequency.value = freq;
-
     gain.gain.setValueAtTime(volume, ctx.currentTime);
     gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + duration);
 
@@ -74,19 +71,13 @@ class Sound {
       sourceNode.buffer = this.createNoiseBuffer(
         duration,
         noiseSmooth,
-        smoothCount,
+        smoothCount
       );
     } else {
       sourceNode = ctx.createOscillator();
       sourceNode.type = type;
 
-      this.rampFrequency(
-        sourceNode.frequency,
-        freqStart,
-        freqEnd,
-        time,
-        freqTime,
-      );
+      this.rampFrequency(sourceNode.frequency, freqStart, freqEnd, time, freqTime);
     }
     let lastNode = sourceNode;
 
@@ -96,13 +87,7 @@ class Sound {
       filterNode.type = filterType;
       filterNode.Q.value = filterQ;
 
-      this.rampFrequency(
-        filterNode.frequency,
-        filterFreq,
-        filterFreqEnd,
-        time,
-        duration,
-      );
+      this.rampFrequency(filterNode.frequency, filterFreq, filterFreqEnd, time, duration);
 
       lastNode.connect(filterNode);
       lastNode = filterNode;
@@ -140,7 +125,6 @@ class Sound {
 
     const real = new Float32Array(N / 2 + 1);
     const imag = new Float32Array(N / 2 + 1);
-
     // DFT
     for (let k = 0; k <= N / 2; k++) {
       let re = 0;
@@ -221,56 +205,5 @@ class Sound {
         data[i] *= gain;
       }
     }
-  }
-
-  clear() {
-    const notes = [523, 659, 784, 1046];
-
-    notes.forEach((freq, i) => {
-      this.playSynth(
-        {
-          type: "triangle",
-          duration: 0.15,
-          volume: 0.1,
-          freqStart: freq,
-        },
-        i * 0.1,
-      );
-    });
-  }
-
-  gameOver() {
-    this.playSynth({
-      type: "triangle",
-      duration: 0.15,
-      volume: 0.1,
-      freqStart: 780,
-      freqEnd: 700,
-      freqTime: 0.3,
-    });
-
-    this.playSynth(
-      {
-        type: "triangle",
-        duration: 0.1,
-        volume: 0.05,
-        freqStart: 598,
-        freqEnd: 550,
-        freqTime: 0.25,
-      },
-      0.08,
-    );
-
-    this.playSynth(
-      {
-        type: "triangle",
-        duration: 0.15,
-        volume: 0.1,
-        freqStart: 780,
-        freqEnd: 700,
-        freqTime: 0.3,
-      },
-      0.28,
-    );
   }
 }

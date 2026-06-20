@@ -1,0 +1,244 @@
+:root {
+  --bg-color: #ffffff;
+  --panel-bg: #f6f8fa;
+  --accent-color: #0969da;
+  --accent-hover: #0c57d0;
+  --stop-color: #cf222e;
+  --stop-hover: #a40e26;
+  --text-color: #24292f;
+  --text-light: #57606a;
+  --border-color: #d0d7de;
+  --success-color: #1a7f37;
+  --error-color: #cf222e;
+  --header-bg: var(--panel-bg);
+  --header-text: #24292f;
+  --badge-bg: #747c86;
+  --badge-text: #ffffff;
+  --badge-active-bg: #dafbe1;
+  --badge-active-border: rgba(26, 127, 55, 0.2);
+  --button-bg: #f6f8fa;
+  --button-hover: #f3f4f6;
+  --button-shadow: 0 1px 0 rgba(27, 31, 36, 0.04);
+  --button-focus-shadow: 0 0 0 3px rgba(9, 105, 218, 0.3);
+  --primary-button-bg: #2da44e;
+  --primary-button-text: #ffffff;
+  --primary-button-hover: #2c974b;
+  --primary-button-border: rgba(27, 31, 36, 0.15);
+  --primary-button-shadow: 0 1px 0 rgba(27, 31, 36, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.03);
+  --textarea-focus-shadow: 0 0 0 3px rgba(9, 105, 218, 0.3);
+  --console-header-bg: #ffffff;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+header {
+  background-color: var(--header-bg);
+  padding: 12px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--header-bg);
+}
+
+header h1 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--header-text);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.status-badge {
+  font-size: 0.75rem;
+  font-weight: 500;
+  padding: 2px 8px;
+  border-radius: 2em;
+  background-color: var(--badge-bg);
+  color: var(--badge-text);
+}
+
+.status-badge.active {
+  background-color: var(--badge-active-bg);
+  color: var(--success-color);
+  border: 1px solid var(--badge-active-border);
+}
+
+.control-panel {
+  background-color: var(--bg-color);
+  padding: 12px 20px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  align-items: center;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.control-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+label {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--text-light);
+}
+
+select, button {
+  background-color: var(--button-bg);
+  color: var(--text-color);
+  border: 1px solid var(--border-color);
+  padding: 5px 16px;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  box-shadow: var(--button-shadow);
+  transition: background-color 0.2s, border-color 0.2s;
+}
+
+select:hover, button:hover {
+  background-color: var(--button-hover);
+}
+
+select:focus, button:focus {
+  outline: none;
+  border-color: var(--accent-color);
+  box-shadow: var(--button-focus-shadow);
+}
+
+button.btn-primary {
+  background-color: var(--primary-button-bg);
+  color: var(--primary-button-text);
+  border: 1px solid var(--primary-button-border);
+  box-shadow: var(--primary-button-shadow);
+}
+
+button.btn-primary:hover {
+  background-color: var(--primary-button-hover);
+}
+
+button.btn-danger {
+  background-color: var(--button-bg);
+  color: var(--stop-color);
+  border-color: var(--border-color);
+}
+
+button.btn-danger:hover {
+  background-color: var(--stop-color);
+  color: var(--header-text);
+  border-color: var(--stop-color);
+}
+
+main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 24px;
+  gap: 16px;
+  overflow: hidden;
+}
+
+.editor-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+textarea {
+  flex: 1;
+  background-color: var(--panel-bg);
+  color: var(--text-color);
+  font-family: ui-monospace, SFMono-Regular, SF Mono, Menlo, Consolas, Liberation Mono, monospace;
+  font-size: 0.85rem;
+  padding: 16px;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  resize: none;
+  line-height: 1.6;
+}
+
+textarea:focus {
+  outline: none;
+  border-color: var(--accent-color);
+  box-shadow: var(--textarea-focus-shadow);
+}
+
+.shortcut-tip {
+  position: absolute;
+  bottom: 12px;
+  right: 16px;
+  font-size: 0.75rem;
+  color: var(--text-light);
+  pointer-events: none;
+}
+
+.console-container {
+  height: 140px;
+  background-color: var(--panel-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  display: flex;
+  flex-direction: column;
+}
+
+.console-header {
+  background-color: var(--console-header-bg);
+  padding: 6px 12px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--text-light);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.console-log {
+  flex: 1;
+  padding: 12px;
+  font-family: ui-monospace, SFMono-Regular, SF Mono, Menlo, Consolas, Liberation Mono, monospace;
+  font-size: 0.8rem;
+  overflow-y: auto;
+  white-space: pre-wrap;
+}
+
+.log-success {
+  color: var(--success-color);
+  font-weight: 600;
+}
+
+.log-error {
+  color: var(--error-color);
+  font-weight: 600;
+}
+
+.log-info {
+  color: var(--text-color);
+}
+
+@media (max-width: 600px) {
+  .control-panel {
+    gap: 10px;
+  }
+  .shortcut-tip {
+    display: none;
+  }
+  main {
+    padding: 12px;
+  }
+}

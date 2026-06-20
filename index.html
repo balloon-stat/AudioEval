@@ -2,22 +2,52 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <meta
-    name="viewport"
-    content="width=device-width,initial-scale=1,user-scalable=no"
-  />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>AudioEval</title>
-
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div class="app">
 
-    <h1>AudioEval</h1>
+  <header>
+    <h1>AudioEval <span id="audio-status" class="status-badge">AudioContext: Suspend</span></h1>
+  </header>
+
+  <div class="control-panel">
+    <div class="control-group">
+      <label for="preset-select">プリセット:</label>
+      <select id="preset-select">
+        <option value="">-- リストから選択 --</option>
+      </select>
+    </div>
+
+    <div class="control-group">
+      <button id="btn-eval" class="btn-primary">Eval</button>
+      <button id="btn-stop" class="btn-danger">Stop</button>
+    </div>
+
+    <div class="control-group" style="margin-left: auto;">
+      <button id="btn-save">お気に入りに保存</button>
+      <select id="history-select">
+        <option value="">-- 保存した履歴 --</option>
+      </select>
+    </div>
+  </div>
+
+  <main>
+    <div class="editor-container">
+      <textarea id="editor" spellcheck="false" placeholder="ここにJavaScriptコードを入力してください..."></textarea>
+      <div class="shortcut-tip">Ctrl + Enter / Cmd + Enter で実行</div>
+    </div>
+
+    <div class="console-container">
+      <div class="console-header">CONSOLE / STATUS</div>
+      <div id="console-log" class="console-log"></div>
+    </div>
+  </main>
 
   <script src="sound.js"></script>
+  <script src="sound_data.js"></script>
   <script src="main.js"></script>
-
 </body>
 </html>
 
