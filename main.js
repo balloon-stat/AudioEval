@@ -8,6 +8,18 @@ sound.playSynth(
   freqEnd: 1200
 }
 );`;
+const PARAMETER_RANGES = {
+  duration: [0.01, 2, 0.01],
+  volume: [0, 1, 0.01],
+  freqStart: [20, 4000, 1],
+  freqEnd: [20, 4000, 1],
+  freqTime: [0.01, 2, 0.01],
+  attackTime: [0.001, 1, 0.001],
+  filterFreq: [20, 8000, 1],
+  filterQ: [0.1, 20, 0.1],
+  noiseSmooth: [0, 0.999, 0.001],
+  smoothCount: [0, 10, 1],
+};
 
 // --- 状態管理 ---
 let soundInstance = null;
@@ -24,6 +36,7 @@ try {
 
 // --- DOM ---
 const editor = document.getElementById('editor');
+const parameterList = document.getElementById("parameter-list");
 const btnEval = document.getElementById('btn-eval');
 const btnStop = document.getElementById('btn-stop');
 const btnSave = document.getElementById('btn-save');
@@ -164,6 +177,120 @@ function executeStop() {
   }
 }
 
+function extractNumericParameters(code) {
+  const regex = /([A-Za-z_$][\w$]*)\s*:\s*(-?\d+(?:\.\d+)?)/g;
+  const params = [];
+  let match;
+
+  while ((match = regex.exec(code)) !== null) {
+    params.push({
+      key: match[1],
+      value: Number(match[2]),
+      start: match.index + match[0].lastIndexOf(match[2]),
+      end:
+        match.index +
+        match[0].lastIndexOf(match[2]) +
+        match[2].length,
+    });
+  }
+
+  return params;
+}
+
+function renderParameterPanel() {
+  parameterList.innerHTML = "";
+
+  const code = editor.value;
+  const params = extractNumericParameters(code);
+
+  params.forEach((param, index) => {
+    const row = document.createElement("div");
+    row.className = "parameter-item";
+
+    const slider = document.createElement("input");
+    slider.type = "range";
+
+    const [min, max, step] =
+      PARAMETER_RANGES[param.key] ??
+      [0, Math.max(param.value * 2, 1), 1];
+
+    slider.min = min
+    slider.max = max;
+    slider.step = step;
+    slider.value = param.value;
+
+    slider.addEventListener("input", () => {
+      const val = formatSliderValue(slider.value, step);
+      updateCodeNumber(index, val);
+      valueSpan.textContent = `< ${val} >`;
+    });
+
+    slider.addEventListener("change", () => {
+      executeEval();
+    });
+
+    const label = document.createElement("label");
+
+    const nameSpan = document.createElement("span");
+    nameSpan.textContent = param.key;
+    const valueSpan = document.createElement("span");
+    valueSpan.className = "parameter-value";
+    const val = formatSliderValue(param.value, step);
+    valueSpan.textContent = `< ${val} >`;
+
+    label.append(nameSpan, valueSpan);
+    
+    const sliderWrapper = document.createElement("div");
+    sliderWrapper.className = "slider-wrapper";
+
+    const sliderLabels = document.createElement("div");
+    sliderLabels.className = "slider-labels";
+
+    const minLabel = document.createElement("span");
+    minLabel.className = "slider-min";
+    minLabel.textContent = min;
+
+    const maxLabel = document.createElement("span");
+    maxLabel.className = "slider-max";
+    maxLabel.textContent = max;
+
+    sliderLabels.append(minLabel, maxLabel);
+    sliderWrapper.append(slider, sliderLabels);
+
+    row.append(label, sliderWrapper);
+    parameterList.appendChild(row);
+  });
+}
+
+function getDecimalPlaces(step) {
+  const text = String(step);
+  const pos = text.indexOf(".");
+
+  return pos === -1 ? 0 : text.length - pos - 1;
+}
+
+function formatSliderValue(value, step) {
+  return Number(value).toFixed(getDecimalPlaces(step));
+}
+
+function updateCodeNumber(targetIndex, newValue) {
+  const code = editor.value;
+  const params = extractNumericParameters(code);
+
+  const param = params[targetIndex];
+
+  if (!param) {
+    return;
+  }
+
+  editor.value =
+    code.slice(0, param.start) +
+    newValue +
+    code.slice(param.end);
+
+  autoSaveCode();
+}
+
 // --- イベントリスナー設定 ---
 
 btnEval.addEventListener('click', executeEval);
@@ -176,7 +303,10 @@ document.addEventListener('keydown', (e) => {
 });
 
 // 自動保存（入力変更時）
-editor.addEventListener('input', autoSaveCode);
+editor.addEventListener("input", () => {
+  autoSaveCode();
+  renderParameterPanel();
+});
 
 // プリセット変更
 presetSelect.addEventListener('change', (e) => {
@@ -185,6 +315,7 @@ presetSelect.addEventListener('change', (e) => {
 
   editor.value = SoundData[presetId].code;
   autoSaveCode();
+  renderParameterPanel();
   printConsole(`プリセット「${SoundData[presetId].title}」を展開しました。`, "info");
 });
 
@@ -222,6 +353,7 @@ historySelect.addEventListener('change', (e) => {
   const selected = savedHistory[index];
   editor.value = selected.code;
   autoSaveCode();
+  renderParameterPanel();
   printConsole(`履歴「${selected.title}」を読み込みました。`, "info");
 });
 
@@ -250,5 +382,6 @@ window.addEventListener('DOMContentLoaded', () => {
     presetSelect.appendChild(opt);
   });
 
+  renderParameterPanel();
   printConsole("AudioEval が起動しました。コードを入力して Eval を押してください。", "info");
 });

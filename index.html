@@ -34,11 +34,19 @@
   </div>
 
   <main>
-    <div class="editor-container">
-      <textarea id="editor" spellcheck="false" placeholder="ここにJavaScriptコードを入力してください..."></textarea>
-      <div class="shortcut-tip">Ctrl + Enter / Cmd + Enter で実行</div>
-    </div>
+    <div class="editor-layout">
+      <div class="editor-container">
+        <textarea id="editor" spellcheck="false" placeholder="ここにJavaScriptコードを入力してください..."></textarea>
+        <div class="shortcut-tip">Ctrl + Enter / Cmd + Enter で実行</div>
+      </div>
+      <aside id="parameter-panel" class="parameter-panel">
+        <div class="parameter-panel-header">
+          Parameters
+        </div>
 
+        <div id="parameter-list"></div>
+      </aside>
+    </div>
     <div class="console-container">
       <div class="console-header">CONSOLE / STATUS</div>
       <div id="console-log" class="console-log"></div>
