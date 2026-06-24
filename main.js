@@ -122,7 +122,7 @@ function loadHistory() {
 
 function renderHistorySelect() {
   // 最初のオプション以外をクリア
-  historySelect.innerHTML = '<option value="">-- 保存した履歴 --</option>';
+  historySelect.innerHTML = '<option value="">-- History --</option>';
   savedHistory.forEach((item, index) => {
     const opt = document.createElement('option');
     opt.value = index;

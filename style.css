@@ -94,6 +94,10 @@ header h1 {
   gap: 8px;
 }
 
+.control-group-history {
+  margin-left: auto;
+}
+
 label {
   font-size: 0.85rem;
   font-weight: 500;
@@ -345,13 +349,93 @@ textarea:focus {
 }
 
 @media (max-width: 600px) {
-  .control-panel {
-    gap: 10px;
-  }
-  .shortcut-tip {
-    display: none;
-  }
   main {
     padding: 12px;
   }
+
+  header {
+    padding: 6px 12px;
+  }
+
+  header h1 {
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    gap: 6px;
+    font-size: 0.85rem;
+  }
+
+  .status-badge {
+    font-size: 0.65rem;
+    padding: 1px 6px;
+  }
+
+  .control-panel {
+    display: grid;
+    grid-template-columns: 1fr auto auto;
+    gap: 6px;
+    align-items: center;
+  }
+
+  .control-group {
+    width: auto;
+    flex-wrap: nowrap;
+    min-width: 0;
+  }
+
+   .control-group:first-child {
+    min-width: 0;
+  }
+
+  .control-group-history {
+    margin-left: 0;
+  }
+
+  #preset-select {
+    width: 100%;
+    min-width: 0;
+  }
+
+  select,
+  button {
+    padding: 4px 8px;
+    font-size: 0.75rem;
+  }
+
+  #history-select {
+    max-width: 120px;
+  }
+
+  .editor-layout {
+    flex-direction: column;
+  }
+
+  .parameter-panel {
+    width: 100%;
+    max-height: 40vh;
+  }
+
+  .parameter-panel-header {
+    display: none;
+  }
+
+  #parameter-list {
+     padding: 8px 12px;
+  }
+
+  .parameter-item {
+    margin-bottom: 10px;
+  }
+
+  textarea {
+    min-height: 300px;
+  }
+
+  .shortcut-tip {
+    display: none;
+  }
+
+  .console-container {
+    height: 80px;
+  }
 }
+
