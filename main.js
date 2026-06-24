@@ -9,13 +9,13 @@ sound.playSynth(
 }
 );`;
 const PARAMETER_RANGES = {
-  duration: [0.01, 2, 0.01],
-  volume: [0, 1, 0.01],
-  freqStart: [20, 4000, 1],
-  freqEnd: [20, 4000, 1],
-  freqTime: [0.01, 2, 0.01],
-  attackTime: [0.001, 1, 0.001],
-  filterFreq: [20, 8000, 1],
+  duration: [0.01, 1, 0.01],
+  volume: [0, 0.5, 0.01],
+  freqStart: [20, 3000, 1],
+  freqEnd: [20, 3000, 1],
+  freqTime: [0.01, 1, 0.01],
+  attackTime: [0.001, 0.5, 0.001],
+  filterFreq: [20, 4000, 1],
   filterQ: [0.1, 20, 0.1],
   noiseSmooth: [0, 0.999, 0.001],
   smoothCount: [0, 10, 1],
